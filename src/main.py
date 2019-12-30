@@ -7,16 +7,16 @@ from snake import SnakeEnv
 EPISODES = 20_000
 
 # Exploration settings
-epsilon = 1  # not a constant, going to be decayed
+epsilon = 0.1  # not a constant, going to be decayed
 EPSILON_DECAY = 0.99975
 MIN_EPSILON = 0.001
 
 # Stats settings
-AGGREGATE_STATS_EVERY = 10
-SAVE_MODELS = True
+AGGREGATE_STATS_EVERY = 1
+SAVE_MODELS = False
 
 # Render
-SHOW_PREVIEW = False
+SHOW_PREVIEW = True
 
 # For stats
 ep_rewards = [-200]

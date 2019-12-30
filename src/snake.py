@@ -19,9 +19,10 @@ class SnakeEnv:
     # board size
     WIDTH = 10
     HEIGHT = 10
+    MAP_SHAPE = (WIDTH * 2 - 1, HEIGHT * 2 - 1, 3)
 
     # environment
-    OBSERVATION_SPACE_VALUES = (WIDTH, HEIGHT, 3)
+    OBSERVATION_SPACE_VALUES = MAP_SHAPE
     ACTION_SPACE_SIZE = 3
 
     # dictionary keys
@@ -91,18 +92,21 @@ class SnakeEnv:
         return np.array(self.get_image()), reward, done
 
     def get_image(self):
-        image = np.zeros((self.WIDTH, self.HEIGHT, 3), dtype=np.uint8)
-        for snake_body in self.snake:
-            if self.is_in_map(snake_body):
-                image[snake_body] = self.COLORS[self.SNAKE_BODY]
+        image = np.zeros(self.MAP_SHAPE, dtype=np.uint8)
+        snake = [p for p in self.snake]
+        for snake_body1, snake_body2 in zip(snake, snake[1:]):
+            image[snake_body1[0]*2][snake_body1[1]*2] = self.COLORS[self.SNAKE_BODY]
+            middle = tuple(map(lambda x1, x2: (x1+x2), snake_body1, snake_body2))
+            if self.is_in_map(snake_body2):
+                image[middle] = self.COLORS[self.SNAKE_BODY]
         snake_head = self.snake[-1]
         if self.is_in_map(snake_head):
-            image[snake_head] = self.COLORS[self.SNAKE_HEAD]
-        image[self.food] = self.COLORS[self.FOOD]
+            image[snake_head[0]*2][snake_head[1]*2] = self.COLORS[self.SNAKE_HEAD]
+        image[self.food[0]*2][self.food[1]*2] = self.COLORS[self.FOOD]
         return Image.fromarray(image, 'RGB')
 
     def render(self):
         image = self.get_image()
-        image = image.resize((self.WIDTH * 20, self.HEIGHT * 20))
+        image = image.resize((self.WIDTH * 30, self.HEIGHT * 30))
         cv2.imshow(f"image", np.array(image))
         cv2.waitKey(30)

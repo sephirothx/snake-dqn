@@ -8,7 +8,7 @@ from ModifiedTensorBoard import ModifiedTensorBoard
 
 REPLAY_MEMORY_SIZE = 50_000
 MIN_REPLAY_MEMORY_SIZE = 1_000
-MODEL_NAME = "NAME"
+MODEL_NAME = "18x18"
 MINIBATCH_SIZE = 64
 DISCOUNT = 0.99
 UPDATE_TARGET_EVERY = 5
@@ -16,7 +16,7 @@ UPDATE_TARGET_EVERY = 5
 class DQNAgent:
     def __init__(self, env):
         self.model = self.create_model(env)
-        # self.model.load_weights('models/model_file.model')
+        self.model.load_weights('models/18x18__-27.00max_-115.54avg_-199.00min.model')
 
         self.target_model = self.create_model(env)
         self.target_model.set_weights(self.model.get_weights())
